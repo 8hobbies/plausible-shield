@@ -27,17 +27,21 @@ export default function App() {
   const [submitted, setSubmitted] = React.useState(true);
 
   useEffect(() => {
-    async function loadData() {
-      setUrlPrefixes((await loadUrlPrefixes()).join("\n"));
-    }
-
+    // Load from storage if the form every time the form is submitted.
     if (!submitted) {
       return;
     }
 
     setSubmitted(false);
 
-    loadData().catch(console.error);
+    loadUrlPrefixes().then(
+      (prefixes) => {
+        setUrlPrefixes(prefixes.join("\n"));
+      },
+      (e) => {
+        console.error(e);
+      },
+    );
   }, [submitted]);
 
   return (
@@ -48,6 +52,7 @@ export default function App() {
       <form
         onSubmit={async () => {
           await saveUrlPrefixes(urlPrefixes);
+          setSubmitted(true);
         }}
       >
         <Stack spacing={2}>
