@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "js": ["src/content.ts"],
+      "matches": ["https://example.com/*"],
+      "run_at": "document_start"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "plausible-shield",
+  "description": "Automatic shield your browser from being tracked by Plausible from your websites",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "format": "eslint --fix */**.ts *.mjs && prettier . --write",
+    "lint": "eslint */**.ts *.mjs --report-unused-disable-directives --max-warnings 0 && prettier . --check && npm run build && web-ext lint -s exact-search.zip",
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "keywords": [
+    "browser-extension"
+  ],
+  "author": "8 Hobbies, LLC dba GoodAddon",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/8hobbies/plausible-shield/issues"
+  },
+  "homepage": "https://www.goodaddon.com/plausible-shield/",
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@8hobbies/eslint-conf-baseline": "^5.0.0",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "@types/webextension-polyfill": "^0.12.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "~5.6.3",
+    "typescript-eslint": "^8.12.2",
+    "vite": "^5.0.0",
+    "vite-plugin-web-extension": "^4.0.0",
+    "prettier": "^3.3.3",
+    "webextension-polyfill": "^0.12.0"
+  }
+}
