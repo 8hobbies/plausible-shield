@@ -1,0 +1,23 @@
+@use "@fontsource/roboto/300.css" as roboto300;
+@use "@fontsource/roboto/400.css" as roboto400;
+@use "@fontsource/roboto/500.css" as roboto500;
+@use "@fontsource/roboto/700.css" as roboto700;
+
+div.app,
+footer.main {
+  margin: auto;
+  max-width: 60rem;
+  min-width: 320px;
+}
+
+footer.main {
+  text-align: center;
+  hr {
+    border: none;
+    height: 1px;
+    background-color: lightGray;
+  }
+  a {
+    color: inherit;
+  }
+}

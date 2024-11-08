@@ -6,5 +6,7 @@
       "matches": ["https://example.com/*"],
       "run_at": "document_start"
     }
-  ]
+  ],
+  "options_page": "src/options.html",
+  "permissions": ["storage"]
 }
