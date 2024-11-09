@@ -25,9 +25,74 @@ import {
   urlPrefixesTextAreaLabel,
 } from "./ui_constants";
 import { loadUrlPrefixes, saveUrlPrefixes } from "./settings";
+import { getUrlMatches } from "./register_content_script";
 import { isURL } from "validator";
 
 export default function App(): React.JSX.Element {
+  async function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<boolean | undefined> {
+    e.preventDefault();
+
+    /** Is a given URL valid? */
+    function isUrlValid(s: string): boolean {
+      return isURL(s, {
+        protocols: ["https", "http"],
+        require_protocol: true,
+        // Don't allow query params due to limitations in content script match pattern
+        allow_query_components: false,
+      });
+    }
+
+    const prefixes = urlPrefixes
+      .split(/\r|\n/g)
+      .map((prefix) => prefix.trim())
+      .filter((prefix) => prefix.length > 0);
+    // Check each prefix. If not a URL, refuse to submit the form. This is to prevent abuse --
+    // this extension is meant to block one's own websites, not all websites that use
+    // Plausible.
+    const invalidPrefix = prefixes.find((prefix, idx) => {
+      if (isUrlValid(prefix)) {
+        return false;
+      }
+      const withHttps = `https://${prefix}` as const;
+      if (isUrlValid(withHttps)) {
+        // Prepend the existing prefix with https://
+        prefixes[idx] = withHttps;
+        return false;
+      }
+      return true;
+    });
+    if (invalidPrefix !== undefined) {
+      setUrlPrefixesHelperText(
+        `"${invalidPrefix}" is not a valid URL prefix. A valid URL prefix must be a valid URL itself.`,
+      );
+      return false;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    chrome.permissions
+      .request({
+        permissions: ["storage"],
+        origins: getUrlMatches(prefixes),
+      })
+      .then((granted) => {
+        if (granted) {
+          console.log("Permission obtained");
+        } else {
+          console.log("Permission denied");
+          window.alert(
+            "Failed to obtain permissions. Plausible Shield will not function properly. To re-request permissions, please go to Plausible Shield extension settings and save changes again.",
+          );
+        }
+      })
+      .catch((e: unknown) => {
+        console.error(e);
+      });
+    await saveUrlPrefixes(prefixes);
+    setSubmitted(true);
+  }
+
   // Initially disable the URL Prefixes textarea, until settings are read.
   const [urlPrefixesEnabled, setUrlPrefixesEnabled] = React.useState(false);
   const [urlPrefixesHelperText, setUrlPrefixesHelperText] = React.useState<
@@ -64,49 +129,7 @@ export default function App(): React.JSX.Element {
       <Typography component="h1" variant="h2">
         Plausible Shield Settings
       </Typography>
-      <form
-        onSubmit={async (e) => {
-          /** Is a given URL valid? */
-          function isUrlValid(s: string): boolean {
-            return isURL(s, {
-              protocols: ["https", "http"],
-              require_protocol: true,
-              // Don't allow query params due to limitations in content script match pattern
-              allow_query_components: false,
-            });
-          }
-
-          const prefixes = urlPrefixes
-            .split(/\r|\n/g)
-            .map((prefix) => prefix.trim())
-            .filter((prefix) => prefix.length > 0);
-          // Check each prefix. If not a URL, refuse to submit the form. This is to prevent abuse --
-          // this extension is meant to block one's own websites, not all websites that use
-          // Plausible.
-          const invalidPrefix = prefixes.find((prefix, idx) => {
-            if (isUrlValid(prefix)) {
-              return false;
-            }
-            const withHttps = `https://${prefix}` as const;
-            if (isUrlValid(withHttps)) {
-              // Prepend the existing prefix with https://
-              prefixes[idx] = withHttps;
-              return false;
-            }
-            return true;
-          });
-          if (invalidPrefix !== undefined) {
-            setUrlPrefixesHelperText(
-              `"${invalidPrefix}" is not a valid URL prefix. A valid URL prefix must be a valid URL itself.`,
-            );
-            e.preventDefault();
-            return false;
-          }
-
-          await saveUrlPrefixes(prefixes);
-          setSubmitted(true);
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Typography component="p" variant="h6">
             URLs starting with any of the following lines will be excluded from
@@ -115,6 +138,7 @@ export default function App(): React.JSX.Element {
           <TextField
             id="url-prefix-text-field"
             label={urlPrefixesTextAreaLabel}
+            name={urlPrefixesTextAreaLabel}
             variant="outlined"
             value={urlPrefixes}
             disabled={!urlPrefixesEnabled}
