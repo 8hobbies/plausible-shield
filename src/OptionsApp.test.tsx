@@ -98,4 +98,28 @@ describe("Options page", () => {
     // See https://github.com/testing-library/react-testing-library/issues/999.
     unmount();
   });
+
+  test("Show error when one line is not a URL", async () => {
+    const invalidUrl = "AN INVALID URL" as const;
+    const user = userEvent.setup();
+    render(<App />);
+
+    await waitFor(() => {
+      expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
+    });
+    await user.clear(getUrlPrefixesTextAreaElement());
+    await user.type(
+      getUrlPrefixesTextAreaElement(),
+      `https://example.com/subsite\n${invalidUrl}\nhttps://example.org`,
+    );
+    expect(getUrlPrefixesTextAreaElement()).toBeValid(); // Sanity check
+    await user.click(getSaveChangesButtonElement());
+
+    await waitFor(() => {
+      expect(getUrlPrefixesTextAreaElement()).toBeInvalid();
+    });
+    expect(
+      screen.getByText(new RegExp(`"${invalidUrl}" is not a valid URL prefix`)),
+    ).toBeInTheDocument();
+  });
 });
