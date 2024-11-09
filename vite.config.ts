@@ -21,4 +21,9 @@ export default defineConfig({
       manifest: generateManifest,
     }),
   ],
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: ["./vitest-setup.js"],
+  },
 });

@@ -1,29 +1,34 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+/** @license GPL-3.0-or-later
+ *
+ * Copyright (C) 2024 8 Hobbies, LLC
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import "./options.scss";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import React, { useEffect } from "react";
-import { isArrayOf } from "@8hobbies/utils";
+import {
+  defaultUrlPrefixes,
+  saveChangesButtonLabel,
+  urlPrefixesTextAreaLabel,
+} from "./ui_constants";
+import { loadUrlPrefixes, saveUrlPrefixes } from "./settings";
 
-const urlPrefixesKey = "urlPrefixes" as const;
-
-/** Save URLs to storage. */
-async function saveUrlPrefixes(content: string): Promise<void> {
-  const urlPrefixes = content.split(/\r|\n/g).filter((line) => line.length > 0);
-  await chrome.storage.sync.set({ [urlPrefixesKey]: urlPrefixes });
-}
-
-/** Load URLs from storage. */
-async function loadUrlPrefixes(): Promise<string[]> {
-  const urlPrefixes = await chrome.storage.sync.get(urlPrefixesKey);
-  const prefixes = urlPrefixes[urlPrefixesKey];
-  if (!isArrayOf(prefixes, "string")) {
-    console.error(`Unexpected url prefix type ${JSON.stringify(urlPrefixes)}`);
-    return [];
-  }
-  return prefixes;
-}
-
-export default function App() {
-  const [urlPrefixes, setUrlPrefixes] = React.useState("");
+export default function App(): React.JSX.Element {
+  const [urlPrefixes, setUrlPrefixes] =
+    React.useState<string>(defaultUrlPrefixes);
   const [submitted, setSubmitted] = React.useState(true);
 
   useEffect(() => {
@@ -38,7 +43,7 @@ export default function App() {
       (prefixes) => {
         setUrlPrefixes(prefixes.join("\n"));
       },
-      (e) => {
+      (e: unknown) => {
         console.error(e);
       },
     );
@@ -56,13 +61,13 @@ export default function App() {
         }}
       >
         <Stack spacing={2}>
-          <Typography component="body" variant="h6">
+          <Typography component="p" variant="h6">
             URLs starting with any of the following lines will be excluded from
             Plausible tracking.
           </Typography>
           <TextField
             id="url-prefix-text-field"
-            label="URL Prefixes (One per line)"
+            label={urlPrefixesTextAreaLabel}
             variant="outlined"
             value={urlPrefixes}
             onChange={(e) => {
@@ -78,7 +83,7 @@ export default function App() {
             minRows={7}
           />
           <Button type="submit" variant="contained">
-            Save Changes
+            {saveChangesButtonLabel}
           </Button>
         </Stack>
       </form>

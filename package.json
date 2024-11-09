@@ -5,10 +5,12 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "format": "eslint --fix */**.ts *.mjs && prettier . --write",
-    "lint": "eslint */**.ts *.mjs --report-unused-disable-directives --max-warnings 0 && prettier . --check && npm run build && web-ext lint -s exact-search.zip",
+    "compile": "tsc",
+    "format": "eslint --fix */**.tsx */**.ts *.mjs && prettier . --write",
+    "lint": "eslint */**.tsx */**.ts *.mjs --report-unused-disable-directives --max-warnings 0 && prettier . --check && npm run compile",
     "dev": "vite",
-    "build": "tsc && vite build"
+    "test": "vitest run --coverage --typecheck",
+    "build": "npm run compile && vite build"
   },
   "keywords": [
     "browser-extension"
@@ -30,17 +32,25 @@
   },
   "devDependencies": {
     "@8hobbies/eslint-conf-baseline": "^5.0.0",
+    "@8hobbies/eslint-conf-react-baseline": "^3.0.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/chrome": "^0.0.280",
+    "@types/jest": "^29.5.14",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@types/webextension-polyfill": "^0.12.1",
     "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^2.1.4",
+    "jsdom": "^25.0.1",
     "prettier": "^3.3.3",
     "sass-embedded": "^1.80.6",
     "typescript": "~5.6.3",
     "typescript-eslint": "^8.12.2",
     "vite": "^5.0.0",
     "vite-plugin-web-extension": "^4.0.0",
+    "vitest": "^2.1.4",
     "webextension-polyfill": "^0.12.0"
   }
 }

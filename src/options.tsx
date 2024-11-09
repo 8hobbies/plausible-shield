@@ -1,7 +1,7 @@
+import "./options.scss";
 import App from "./OptionsApp";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./options.scss";
 
 const rootElement = document.getElementById("root");
 if (rootElement === null) {
