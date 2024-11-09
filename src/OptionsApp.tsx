@@ -27,6 +27,8 @@ import {
 import { loadUrlPrefixes, saveUrlPrefixes } from "./settings";
 
 export default function App(): React.JSX.Element {
+  // Initially disable the URL Prefixes textarea, until settings are read.
+  const [urlPrefixesEnabled, setUrlPrefixesEnabled] = React.useState(false);
   const [urlPrefixes, setUrlPrefixes] =
     React.useState<string>(defaultUrlPrefixes);
   const [submitted, setSubmitted] = React.useState(true);
@@ -39,14 +41,18 @@ export default function App(): React.JSX.Element {
 
     setSubmitted(false);
 
-    loadUrlPrefixes().then(
-      (prefixes) => {
-        setUrlPrefixes(prefixes.join("\n"));
-      },
-      (e: unknown) => {
+    loadUrlPrefixes()
+      .then((prefixes) => {
+        if (prefixes !== null) {
+          setUrlPrefixes(prefixes.join("\n"));
+        }
+      })
+      .catch((e: unknown) => {
         console.error(e);
-      },
-    );
+      })
+      .finally(() => {
+        setUrlPrefixesEnabled(true);
+      });
   }, [submitted]);
 
   return (
@@ -70,6 +76,7 @@ export default function App(): React.JSX.Element {
             label={urlPrefixesTextAreaLabel}
             variant="outlined"
             value={urlPrefixes}
+            disabled={!urlPrefixesEnabled}
             onChange={(e) => {
               setUrlPrefixes(e.target.value);
             }}
