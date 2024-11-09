@@ -71,6 +71,8 @@ export default function App(): React.JSX.Element {
             return isURL(s, {
               protocols: ["https", "http"],
               require_protocol: true,
+              // Don't allow query params due to limitations in content script match pattern
+              allow_query_components: false,
             });
           }
 

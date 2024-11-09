@@ -23,6 +23,7 @@ import {
 } from "./ui_constants";
 import { render, screen, waitFor } from "@testing-library/react";
 import App from "./OptionsApp";
+import { urlPrefixesKey } from "./settings";
 import { userEvent } from "@testing-library/user-event";
 
 function getUrlPrefixesTextAreaElement(): HTMLTextAreaElement {
@@ -114,7 +115,7 @@ describe("Options page", () => {
       .mockImplementation(() => undefined);
 
     // eslint-disable-next-line @typescript-eslint/no-deprecated
-    await chrome.storage.sync.set({ urlPrefixes: "not a string array" });
+    await chrome.storage.sync.set({ [urlPrefixesKey]: "not a string array" });
 
     const { unmount } = render(<App />);
     await waitFor(() => {
@@ -131,27 +132,36 @@ describe("Options page", () => {
     unmount();
   });
 
-  test("Show error when one line is not a URL", async () => {
-    const invalidUrl = "AN INVALID URL" as const;
-    const user = userEvent.setup();
-    render(<App />);
+  describe("Show error when one line is not a URL", () => {
+    for (const testCase of [
+      ["Plainly not a URL", "AN INVALID URL"],
+      ["URL with a param", "https://example.com?abc=1"],
+    ] as const) {
+      test(testCase[0], async () => {
+        const invalidUrl = testCase[1];
+        const user = userEvent.setup();
+        render(<App />);
 
-    await waitFor(() => {
-      expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
-    });
-    await user.clear(getUrlPrefixesTextAreaElement());
-    await user.type(
-      getUrlPrefixesTextAreaElement(),
-      `https://example.com/subsite\n${invalidUrl}\nhttps://example.org`,
-    );
-    expect(getUrlPrefixesTextAreaElement()).toBeValid(); // Sanity check
-    await user.click(getSaveChangesButtonElement());
+        await waitFor(() => {
+          expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
+        });
+        await user.clear(getUrlPrefixesTextAreaElement());
+        await user.type(
+          getUrlPrefixesTextAreaElement(),
+          `https://example.com/subsite\n${invalidUrl}\nhttps://example.org`,
+        );
+        expect(getUrlPrefixesTextAreaElement()).toBeValid(); // Sanity check
+        await user.click(getSaveChangesButtonElement());
 
-    await waitFor(() => {
-      expect(getUrlPrefixesTextAreaElement()).toBeInvalid();
-    });
-    expect(
-      screen.getByText(new RegExp(`"${invalidUrl}" is not a valid URL prefix`)),
-    ).toBeInTheDocument();
+        await waitFor(() => {
+          expect(getUrlPrefixesTextAreaElement()).toBeInvalid();
+        });
+        expect(
+          screen.getByText(`"${invalidUrl}" is not a valid URL prefix`, {
+            exact: false,
+          }),
+        ).toBeInTheDocument();
+      });
+    }
   });
 });

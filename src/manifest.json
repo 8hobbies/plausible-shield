@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
-  "content_scripts": [
-    {
-      "js": ["src/content.ts"],
-      "matches": ["https://example.com/*"],
-      "run_at": "document_start"
-    }
-  ],
+  "background": {
+    "{{chrome}}.service_worker": "src/background.ts",
+    "{{firefox}}.scripts": ["src/background.ts"]
+  },
+  "minimum_chrome_version": "130",
   "options_page": "src/options.html",
-  "permissions": ["storage"]
+  "permissions": ["storage", "scripting"],
+  "optional_host_permissions": ["<all_urls>"]
 }
