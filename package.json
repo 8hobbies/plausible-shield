@@ -32,7 +32,7 @@
     "validator": "^13.12.0"
   },
   "devDependencies": {
-    "@8hobbies/eslint-conf-baseline": "^5.0.0",
+    "@8hobbies/eslint-conf-baseline": "^6.0.0",
     "@8hobbies/eslint-conf-react-baseline": "^3.0.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",

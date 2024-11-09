@@ -18,7 +18,7 @@
 
 import { isArrayOf } from "@8hobbies/utils";
 
-const urlPrefixesKey = "urlPrefixes" as const;
+export const urlPrefixesKey = "urlPrefixes" as const;
 
 /** Save URLs to storage. */
 export async function saveUrlPrefixes(
