@@ -25,7 +25,6 @@ import {
   urlPrefixesTextAreaLabel,
 } from "./ui_constants";
 import { loadUrlPrefixes, saveUrlPrefixes } from "./settings";
-import { isBlank } from "@8hobbies/utils";
 import { isURL } from "validator";
 
 export default function App(): React.JSX.Element {
@@ -77,7 +76,8 @@ export default function App(): React.JSX.Element {
 
           const prefixes = urlPrefixes
             .split(/\r|\n/g)
-            .filter((line) => !isBlank(line));
+            .map((prefix) => prefix.trim())
+            .filter((prefix) => prefix.length > 0);
           // Check each prefix. If not a URL, refuse to submit the form. This is to prevent abuse --
           // this extension is meant to block one's own websites, not all websites that use
           // Plausible.
