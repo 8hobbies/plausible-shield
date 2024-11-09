@@ -35,6 +35,7 @@ function getSaveChangesButtonElement(): HTMLButtonElement {
 
 describe("Options page", () => {
   beforeEach(() => {
+    vi.resetAllMocks();
     resetBrowserStorage();
   });
 
@@ -58,6 +59,9 @@ describe("Options page", () => {
       const user = userEvent.setup();
       const { unmount } = render(<App />);
 
+      await waitFor(() => {
+        expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
+      });
       await user.clear(getUrlPrefixesTextAreaElement());
       await user.type(getUrlPrefixesTextAreaElement(), testCase[1]);
       await user.click(getSaveChangesButtonElement());
@@ -66,8 +70,32 @@ describe("Options page", () => {
       // Reload the page, the saved URL prefixes should be there.
       render(<App />);
       await waitFor(() => {
+        expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
         expect(getUrlPrefixesTextAreaElement()).toHaveValue(testCase[1]);
       });
     });
   }
+
+  test("Loading with erroneous storage", async () => {
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    await chrome.storage.sync.set({ urlPrefixes: "not a string array" });
+
+    const { unmount } = render(<App />);
+    await waitFor(() => {
+      expect(consoleError).toHaveBeenCalledWith(
+        expect.stringContaining("Unexpected url prefixes type"),
+      );
+    });
+    expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
+    expect(getUrlPrefixesTextAreaElement()).toHaveValue(defaultUrlPrefixes);
+
+    // Explicitly unmount here, otherwise will be warned:
+    //   Warning: An update to App inside a test was not wrapped in act(...).
+    // See https://github.com/testing-library/react-testing-library/issues/999.
+    unmount();
+  });
 });

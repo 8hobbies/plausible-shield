@@ -28,19 +28,19 @@ export async function saveUrlPrefixes(content: string): Promise<void> {
 }
 
 /** Load URLs from storage. */
-export async function loadUrlPrefixes(): Promise<string[]> {
+export async function loadUrlPrefixes(): Promise<string[] | null> {
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   const urlPrefixes = await chrome.storage.sync.get(urlPrefixesKey);
   if (!(urlPrefixesKey in urlPrefixes)) {
     // No settings yet.
-    return [];
+    return null;
   }
   const prefixes: unknown = urlPrefixes[urlPrefixesKey];
   if (!isArrayOf(prefixes, "string")) {
     console.error(
       `Unexpected url prefixes type ${JSON.stringify(urlPrefixes)}`,
     );
-    return [];
+    return null;
   }
   return prefixes;
 }
