@@ -16,16 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { default as baseConfigs } from "@8hobbies/eslint-conf-baseline";
-import configs from "@8hobbies/eslint-conf-react-baseline";
-
-const reactConfig = configs.recommended(import.meta.dirname, true);
-reactConfig[reactConfig.length - 1].files = ["**/*.ts", "**/*.tsx"];
-
-export default [
-  {
-    ignores: ["./types/"],
-  },
-  ...baseConfigs.recommended,
-  ...reactConfig,
-];
+export const urlPrefixesTextAreaLabel = "URL Prefixes (One per line)" as const;
+export const defaultUrlPrefixes =
+  "https://example.com\nhttps://example.org/subsite" as const;
+export const saveChangesButtonLabel = "Save Changes" as const;
