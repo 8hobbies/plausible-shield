@@ -5,10 +5,10 @@ let syncStorage = {};
 globalThis.chrome = {
   storage: {
     sync: {
-      set: (items) => {
+      set: async (items) => {
         syncStorage = items;
       },
-      get: (_) => {
+      get: async (_) => {
         return syncStorage;
       },
     },

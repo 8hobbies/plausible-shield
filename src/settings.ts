@@ -31,9 +31,15 @@ export async function saveUrlPrefixes(content: string): Promise<void> {
 export async function loadUrlPrefixes(): Promise<string[]> {
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   const urlPrefixes = await chrome.storage.sync.get(urlPrefixesKey);
+  if (!(urlPrefixesKey in urlPrefixes)) {
+    // No settings yet.
+    return [];
+  }
   const prefixes: unknown = urlPrefixes[urlPrefixesKey];
   if (!isArrayOf(prefixes, "string")) {
-    console.error(`Unexpected url prefix type ${JSON.stringify(urlPrefixes)}`);
+    console.error(
+      `Unexpected url prefixes type ${JSON.stringify(urlPrefixes)}`,
+    );
     return [];
   }
   return prefixes;
