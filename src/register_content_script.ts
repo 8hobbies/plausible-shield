@@ -18,16 +18,20 @@
 
 export const contentScriptId = "URLPrefixes" as const;
 
-/** Register content scripts. */
-export async function registerContentScripts(
-  newUrlPrefixes: readonly string[],
-): Promise<void> {
-  const matches = newUrlPrefixes.map((prefix) =>
+export function getUrlMatches(urlPrefixes: readonly string[]): string[] {
+  return urlPrefixes.map((prefix) =>
     // If it's a host only, match with /* due to limitations in content script match patterns.
     new URL(prefix).pathname === "/" && prefix.at(-1) !== "/"
       ? `${prefix}/*`
       : `${prefix}*`,
   );
+}
+
+/** Register content scripts. */
+export async function registerContentScripts(
+  newUrlPrefixes: readonly string[],
+): Promise<void> {
+  const matches = getUrlMatches(newUrlPrefixes);
 
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   const curScript = await chrome.scripting.getRegisteredContentScripts({

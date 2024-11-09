@@ -13,6 +13,15 @@ globalThis.chrome = {
       },
     },
   },
+  permissions: {
+    request: async (_) => {
+      return true;
+    },
+  },
+};
+
+globalThis.window.alert = (message) => {
+  globalThis.console.log(message);
 };
 
 globalThis.resetBrowserStorage = () => {
