@@ -39,10 +39,15 @@ describe("Options page", () => {
   });
 
   test("Initial screen", () => {
-    render(<App />);
+    const { unmount } = render(<App />);
 
     expect(getUrlPrefixesTextAreaElement()).toHaveValue(defaultUrlPrefixes);
     expect(getSaveChangesButtonElement()).toBeEnabled();
+
+    // Explicitly unmount here, otherwise will be warned:
+    //   Warning: An update to App inside a test was not wrapped in act(...).
+    // See https://github.com/testing-library/react-testing-library/issues/999.
+    unmount();
   });
 
   for (const testCase of [
