@@ -22,10 +22,4 @@ import configs from "@8hobbies/eslint-conf-react-baseline";
 const reactConfig = configs.recommended(import.meta.dirname, true);
 reactConfig[reactConfig.length - 1].files = ["src/*.ts", "src/*.tsx"];
 
-export default [
-  {
-    ignores: ["./types/"],
-  },
-  ...baseConfigs.recommended,
-  ...reactConfig,
-];
+export default [...baseConfigs.recommended, ...reactConfig];
