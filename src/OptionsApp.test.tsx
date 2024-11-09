@@ -51,30 +51,62 @@ describe("Options page", () => {
     unmount();
   });
 
-  for (const testCase of [
-    ["single line", "https://a.example.com"],
-    ["multi lines", "https://a.example.com\nhttps://b.example.com"],
-  ]) {
-    test(`URL Prefixes text area loads previous save: ${testCase[0]}`, async () => {
-      const user = userEvent.setup();
-      const { unmount } = render(<App />);
+  describe("URL Prefixes text area loads previous save", () => {
+    for (const testCase of [
+      {
+        name: "single line",
+        input: "https://a.example.com",
+        expected: "https://a.example.com",
+      },
+      {
+        name: "multi lines",
+        input: "https://a.example.com\nhttps://b.example.com",
+        expected: "https://a.example.com\nhttps://b.example.com",
+      },
+      {
+        name: "with a Blank line",
+        input: "https://a.example.com\n  \nhttps://b.example.com",
+        expected: "https://a.example.com\nhttps://b.example.com",
+      },
+      {
+        name: "with no protocol",
+        input: "a.example.com\nhttps://b.example.com",
+        expected: "https://a.example.com\nhttps://b.example.com",
+      },
+      {
+        name: "with http protocol",
+        input: "http://a.example.com\nhttps://b.example.com",
+        expected: "http://a.example.com\nhttps://b.example.com",
+      },
+      {
+        name: "with spaces around valid lines",
+        input: "  http://a.example.com\nhttps://b.example.com   ",
+        expected: "http://a.example.com\nhttps://b.example.com",
+      },
+    ] as const) {
+      test(testCase.name, async () => {
+        const user = userEvent.setup();
+        const { unmount } = render(<App />);
 
-      await waitFor(() => {
-        expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
-      });
-      await user.clear(getUrlPrefixesTextAreaElement());
-      await user.type(getUrlPrefixesTextAreaElement(), testCase[1]);
-      await user.click(getSaveChangesButtonElement());
-      unmount();
+        await waitFor(() => {
+          expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
+        });
+        await user.clear(getUrlPrefixesTextAreaElement());
+        await user.type(getUrlPrefixesTextAreaElement(), testCase.input);
+        await user.click(getSaveChangesButtonElement());
+        unmount();
 
-      // Reload the page, the saved URL prefixes should be there.
-      render(<App />);
-      await waitFor(() => {
-        expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
-        expect(getUrlPrefixesTextAreaElement()).toHaveValue(testCase[1]);
+        // Reload the page, the saved URL prefixes should be there.
+        render(<App />);
+        await waitFor(() => {
+          expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
+          expect(getUrlPrefixesTextAreaElement()).toHaveValue(
+            testCase.expected,
+          );
+        });
       });
-    });
-  }
+    }
+  });
 
   test("Loading with erroneous storage", async () => {
     const consoleError = vi
