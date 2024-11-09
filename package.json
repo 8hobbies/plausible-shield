@@ -1,6 +1,6 @@
 {
   "name": "plausible-shield",
-  "description": "Automatic shield your browser from being tracked by Plausible from your websites",
+  "description": "Automatically shield your browser from being tracked by Plausible from your websites",
   "private": true,
   "version": "1.0.0",
   "type": "module",
