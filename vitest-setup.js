@@ -1,5 +1,20 @@
 import "@testing-library/jest-dom/vitest";
 
-globalThis.jest = {
-  ...globalThis.jest,
+let syncStorage = {};
+
+globalThis.chrome = {
+  storage: {
+    sync: {
+      set: (items) => {
+        syncStorage = items;
+      },
+      get: (_) => {
+        return syncStorage;
+      },
+    },
+  },
+};
+
+globalThis.resetBrowserStorage = () => {
+  syncStorage = {};
 };
