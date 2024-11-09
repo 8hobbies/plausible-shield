@@ -21,17 +21,9 @@ import {
   saveChangesButtonLabel,
   urlPrefixesTextAreaLabel,
 } from "./ui_constants";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import App from "./OptionsApp";
-
-vi.mock("./settings.js", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("./settings.js")>();
-  return {
-    ...mod,
-    loadUrlPrefixes: (): Promise<string[]> => new Promise(() => []),
-    saveUrlPrefixes: (_: string): Promise<void> => new Promise(() => undefined),
-  };
-});
+import { userEvent } from "@testing-library/user-event";
 
 function getUrlPrefixesTextAreaElement(): HTMLTextAreaElement {
   return screen.getByRole("textbox", { name: urlPrefixesTextAreaLabel });
@@ -41,11 +33,36 @@ function getSaveChangesButtonElement(): HTMLButtonElement {
   return screen.getByRole("button", { name: saveChangesButtonLabel });
 }
 
-test("Initial screen", () => {
-  render(<App />);
+describe("Options page", () => {
+  beforeEach(() => {
+    resetBrowserStorage();
+  });
 
-  const urlPrefixesTextArea = getUrlPrefixesTextAreaElement();
-  expect(urlPrefixesTextArea).toHaveValue(defaultUrlPrefixes);
-  const saveChangesButton = getSaveChangesButtonElement();
-  expect(saveChangesButton).toBeEnabled();
+  test("Initial screen", () => {
+    render(<App />);
+
+    expect(getUrlPrefixesTextAreaElement()).toHaveValue(defaultUrlPrefixes);
+    expect(getSaveChangesButtonElement()).toBeEnabled();
+  });
+
+  for (const testCase of [
+    ["single line", "https://a.example.com"],
+    ["multi lines", "https://a.example.com\nhttps://b.example.com"],
+  ]) {
+    test(`URL Prefixes text area loads previous save: ${testCase[0]}`, async () => {
+      const user = userEvent.setup();
+      const { unmount } = render(<App />);
+
+      await user.clear(getUrlPrefixesTextAreaElement());
+      await user.type(getUrlPrefixesTextAreaElement(), testCase[1]);
+      await user.click(getSaveChangesButtonElement());
+      unmount();
+
+      // Reload the page, the saved URL prefixes should be there.
+      render(<App />);
+      await waitFor(() => {
+        expect(getUrlPrefixesTextAreaElement()).toHaveValue(testCase[1]);
+      });
+    });
+  }
 });
