@@ -21,8 +21,9 @@ import { isArrayOf } from "@8hobbies/utils";
 const urlPrefixesKey = "urlPrefixes" as const;
 
 /** Save URLs to storage. */
-export async function saveUrlPrefixes(content: string): Promise<void> {
-  const urlPrefixes = content.split(/\r|\n/g).filter((line) => line.length > 0);
+export async function saveUrlPrefixes(
+  urlPrefixes: readonly string[],
+): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   await chrome.storage.sync.set({ [urlPrefixesKey]: urlPrefixes });
 }
