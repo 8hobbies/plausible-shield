@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 
 let syncStorage = {};
+let permissionAlwaysGranted = true;
 
 globalThis.chrome = {
   storage: {
@@ -8,14 +9,14 @@ globalThis.chrome = {
       set: async (items) => {
         syncStorage = items;
       },
-      get: async (_) => {
+      get: async () => {
         return syncStorage;
       },
     },
   },
   permissions: {
-    request: async (_) => {
-      return true;
+    request: async () => {
+      return permissionAlwaysGranted;
     },
   },
 };
@@ -26,4 +27,8 @@ globalThis.window.alert = (message) => {
 
 globalThis.resetBrowserStorage = () => {
   syncStorage = {};
+};
+
+globalThis.setPermissionGranted = (grant) => {
+  permissionAlwaysGranted = grant;
 };

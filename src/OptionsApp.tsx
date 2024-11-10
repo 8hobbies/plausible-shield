@@ -93,7 +93,7 @@ export default function App(): React.JSX.Element {
     setSubmitted(true);
   }
 
-  // Initially disable the URL Prefixes textarea, until settings are read.
+  // Initially disable the URL Prefixes textarea and button, until settings are read.
   const [urlPrefixesEnabled, setUrlPrefixesEnabled] = React.useState(false);
   const [urlPrefixesHelperText, setUrlPrefixesHelperText] = React.useState<
     string | null
@@ -156,7 +156,11 @@ export default function App(): React.JSX.Element {
             }}
             minRows={7}
           />
-          <Button type="submit" variant="contained">
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!urlPrefixesEnabled}
+          >
             {saveChangesButtonLabel}
           </Button>
         </Stack>
