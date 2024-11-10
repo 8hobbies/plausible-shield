@@ -17,6 +17,7 @@
  */
 
 import {
+  changesSavedText,
   defaultUrlPrefixes,
   saveChangesButtonLabel,
   urlPrefixesTextAreaLabel,
@@ -188,6 +189,21 @@ describe("Options page", () => {
       expect(alertFunction).toHaveBeenCalledWith(
         expect.stringContaining("Failed to obtain permissions"),
       );
+    });
+  });
+
+  test('"Changes saved" shown after saving changes', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await waitFor(() => {
+      expect(getSaveChangesButtonElement()).toBeEnabled();
+    });
+    expect(screen.queryByText(changesSavedText)).toBeNull(); // No such text before saving
+    await user.click(getSaveChangesButtonElement());
+
+    await waitFor(() => {
+      expect(screen.getByText(changesSavedText)).toBeInTheDocument();
     });
   });
 });

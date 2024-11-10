@@ -20,3 +20,4 @@ export const urlPrefixesTextAreaLabel = "URL Prefixes (One per line)" as const;
 export const defaultUrlPrefixes =
   "https://example.com\nhttps://example.org/subsite" as const;
 export const saveChangesButtonLabel = "Save Changes" as const;
+export const changesSavedText = "Changes saved" as const;

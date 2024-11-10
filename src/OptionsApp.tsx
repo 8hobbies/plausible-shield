@@ -17,9 +17,17 @@
  */
 
 import "./options.scss";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Snackbar,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import {
+  changesSavedText,
   defaultUrlPrefixes,
   saveChangesButtonLabel,
   urlPrefixesTextAreaLabel,
@@ -91,6 +99,7 @@ export default function App(): React.JSX.Element {
       });
     await saveUrlPrefixes(prefixes);
     setSubmitted(true);
+    setChangesSavedShown(true);
   }
 
   // Initially disable the URL Prefixes textarea and button, until settings are read.
@@ -101,6 +110,7 @@ export default function App(): React.JSX.Element {
   const [urlPrefixes, setUrlPrefixes] =
     React.useState<string>(defaultUrlPrefixes);
   const [submitted, setSubmitted] = React.useState(true);
+  const [changesSavedShown, setChangesSavedShown] = React.useState(false);
 
   useEffect(() => {
     // Load from storage if the form every time the form is submitted.
@@ -125,7 +135,7 @@ export default function App(): React.JSX.Element {
   }, [submitted]);
 
   return (
-    <>
+    <Box>
       <Typography component="h1" variant="h2">
         Plausible Shield Settings
       </Typography>
@@ -165,6 +175,15 @@ export default function App(): React.JSX.Element {
           </Button>
         </Stack>
       </form>
-    </>
+      <Snackbar
+        open={changesSavedShown}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        onClose={() => {
+          setChangesSavedShown(false);
+        }}
+        autoHideDuration={5000}
+        message={changesSavedText}
+      />
+    </Box>
   );
 }
