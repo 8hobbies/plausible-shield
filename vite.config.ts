@@ -9,6 +9,8 @@ function generateManifest() {
     name: pkg.name,
     description: pkg.description,
     version: pkg.version,
+    author: pkg.author,
+    homepage_url: pkg.homepage,
     ...manifest,
   };
 }
