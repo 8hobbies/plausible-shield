@@ -1,6 +1,6 @@
 # Plausible Shield
 
-Automatically shield your browser from being tracked by Plausible from your websites.
+Automatically shield your browser from Plausible tracking from your websites.
 
 Please visit https://www.goodaddon.com/plausible-shield for more information.
 
