@@ -1,6 +1,6 @@
 {
   "name": "plausible-shield",
-  "description": "Automatically shield your browser from being tracked by Plausible from your websites",
+  "description": "Automatically shield your browser from Plausible tracking from your websites",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -9,6 +9,7 @@
     "format": "eslint --fix */**.tsx */**.ts *.mjs && prettier . --write",
     "lint": "eslint */**.tsx */**.ts *.mjs --report-unused-disable-directives --max-warnings 0 && prettier . --check && npm run build && web-ext lint -s plausible-shield.zip",
     "dev": "vite",
+    "ff:android": "web-ext run -t firefox-android --firefox-apk org.mozilla.fenix --adb-device",
     "test": "vitest run --coverage --typecheck",
     "build": "npm run compile && vite build && web-ext build -a . -s dist --overwrite-dest --filename plausible-shield.zip"
   },
