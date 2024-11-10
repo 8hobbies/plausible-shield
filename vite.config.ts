@@ -26,6 +26,7 @@ export default defineConfig({
     react(),
     webExtension({
       manifest: generateManifest,
+      additionalInputs: ["src/content.ts"],
     }),
   ],
   test: {

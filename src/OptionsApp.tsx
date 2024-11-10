@@ -81,7 +81,6 @@ export default function App(): React.JSX.Element {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     chrome.permissions
       .request({
-        permissions: ["storage"],
         origins: getUrlMatches(prefixes),
       })
       .then((granted) => {

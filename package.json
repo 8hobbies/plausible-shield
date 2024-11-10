@@ -2,15 +2,15 @@
   "name": "plausible-shield",
   "description": "Automatically shield your browser from being tracked by Plausible from your websites",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "compile": "tsc",
     "format": "eslint --fix */**.tsx */**.ts *.mjs && prettier . --write",
-    "lint": "eslint */**.tsx */**.ts *.mjs --report-unused-disable-directives --max-warnings 0 && prettier . --check && npm run compile",
+    "lint": "eslint */**.tsx */**.ts *.mjs --report-unused-disable-directives --max-warnings 0 && prettier . --check && npm run build && web-ext lint -s plausible-shield.zip",
     "dev": "vite",
     "test": "vitest run --coverage --typecheck",
-    "build": "npm run compile && vite build"
+    "build": "npm run compile && vite build && web-ext build -a . -s dist --overwrite-dest --filename plausible-shield.zip"
   },
   "keywords": [
     "browser-extension"
@@ -53,6 +53,7 @@
     "vite": "^5.4.10",
     "vite-plugin-web-extension": "^4.2.0",
     "vitest": "^2.1.4",
+    "web-ext": "^8.3.0",
     "webextension-polyfill": "^0.12.0"
   }
 }

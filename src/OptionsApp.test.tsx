@@ -243,7 +243,6 @@ describe("Options page", () => {
 
         await waitFor(() => {
           expect(permissionRequestFunc).toHaveBeenCalledWith({
-            permissions: ["storage"],
             origins: testCase.expectedOrigins,
           });
         });
