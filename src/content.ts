@@ -16,4 +16,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// See https://plausible.io/docs/excluding-localstorage
 localStorage.setItem("plausible_ignore", "true");

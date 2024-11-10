@@ -37,7 +37,7 @@ function getSaveChangesButtonElement(): HTMLButtonElement {
 
 describe("Options page", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.restoreAllMocks();
     resetBrowserStorage();
     setPermissionGranted(true);
   });
@@ -190,6 +190,65 @@ describe("Options page", () => {
         expect.stringContaining("Failed to obtain permissions"),
       );
     });
+  });
+
+  describe("Requested permissions should have the right origin", () => {
+    for (const testCase of [
+      {
+        name: "Single URL",
+        input: "https://example.org",
+        expectedOrigins: ["https://example.org/*"],
+      },
+      {
+        name: "Root URL with no trailing slash",
+        input: "https://example.org\nhttps://example.com",
+        expectedOrigins: ["https://example.org/*", "https://example.com/*"],
+      },
+      {
+        name: "Root URL with trailing slash",
+        input: "https://example.org\nhttps://example.com/",
+        expectedOrigins: ["https://example.org/*", "https://example.com/*"],
+      },
+      {
+        name: "URL with path with no trailing slash",
+        input: "https://example.org/abc/def\nhttps://example.com/abc",
+        expectedOrigins: [
+          "https://example.org/abc/def*",
+          "https://example.com/abc*",
+        ],
+      },
+      {
+        name: "URL with path with trailing slash",
+        input: "https://example.org/abc/def/\nhttps://example.com/abc/",
+        expectedOrigins: [
+          "https://example.org/abc/def/*",
+          "https://example.com/abc/*",
+        ],
+      },
+    ] as const) {
+      test(testCase.name, async () => {
+        const permissionRequestFunc = vi
+          .spyOn(chrome.permissions, "request") // eslint-disable-line @typescript-eslint/no-deprecated
+          .mockImplementation(async () => true); // eslint-disable-line @typescript-eslint/require-await
+
+        const user = userEvent.setup();
+        render(<App />);
+
+        await waitFor(() => {
+          expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
+        });
+        await user.clear(getUrlPrefixesTextAreaElement());
+        await user.type(getUrlPrefixesTextAreaElement(), testCase.input);
+        await user.click(getSaveChangesButtonElement());
+
+        await waitFor(() => {
+          expect(permissionRequestFunc).toHaveBeenCalledWith({
+            permissions: ["storage"],
+            origins: testCase.expectedOrigins,
+          });
+        });
+      });
+    }
   });
 
   test('"Changes saved" shown after saving changes', async () => {
