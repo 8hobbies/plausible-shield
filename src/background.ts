@@ -44,3 +44,20 @@ chrome.runtime.onStartup.addListener(async () => {
     await registerContentScripts(urlPrefixes);
   }
 });
+
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+chrome.runtime.onInstalled.addListener(async (details) => {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    await chrome.tabs.create({
+      url: "https://www.goodaddon.com/plausible-shield/",
+    });
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+  } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    await chrome.tabs.create({
+      url: "https://www.goodaddon.com/plausible-shield/#changelog",
+    });
+  }
+});
