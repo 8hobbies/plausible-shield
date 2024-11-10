@@ -16,7 +16,7 @@
   "keywords": [
     "browser-extension"
   ],
-  "author": "8 Hobbies, LLC dba GoodAddon",
+  "author": "GoodAddon",
   "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/8hobbies/plausible-shield/issues"

@@ -8,8 +8,8 @@ If you'd like to rebuild or contribute this browser extension, please check out 
 
 ## License
 
-Unless otherwise stated (notably the icons/ directory), files in this repository are licensed under
-the GNU General Public License version 3 or later.
+Unless otherwise stated (notably the public/icons/ directory), files in this repository are licensed
+under the GNU General Public License version 3 or later.
 
 Copyright (C) 2024 8 Hobbies, LLC
 
