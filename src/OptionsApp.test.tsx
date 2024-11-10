@@ -38,18 +38,22 @@ describe("Options page", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     resetBrowserStorage();
+    setPermissionGranted(true);
   });
 
-  test("Initial screen", () => {
-    const { unmount } = render(<App />);
+  test("Initial screen", async () => {
+    render(<App />);
 
     expect(getUrlPrefixesTextAreaElement()).toHaveValue(defaultUrlPrefixes);
-    expect(getSaveChangesButtonElement()).toBeEnabled();
 
-    // Explicitly unmount here, otherwise will be warned:
-    //   Warning: An update to App inside a test was not wrapped in act(...).
-    // See https://github.com/testing-library/react-testing-library/issues/999.
-    unmount();
+    // Initially disabled, then enabled after settings have been loaded.
+    expect(getUrlPrefixesTextAreaElement()).toBeDisabled();
+    expect(getSaveChangesButtonElement()).toBeDisabled();
+
+    await waitFor(() => {
+      expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
+      expect(getSaveChangesButtonElement()).toBeEnabled();
+    });
   });
 
   describe("URL Prefixes text area loads previous save", () => {
@@ -163,5 +167,27 @@ describe("Options page", () => {
         ).toBeInTheDocument();
       });
     }
+  });
+
+  test("Shows an alert if user doesn't grant permission", async () => {
+    const alertFunction = vi
+      .spyOn(window, "alert")
+      .mockImplementation(() => undefined);
+
+    setPermissionGranted(false);
+
+    const user = userEvent.setup();
+    render(<App />);
+
+    await waitFor(() => {
+      expect(getSaveChangesButtonElement()).toBeEnabled();
+    });
+    await user.click(getSaveChangesButtonElement());
+
+    await waitFor(() => {
+      expect(alertFunction).toHaveBeenCalledWith(
+        expect.stringContaining("Failed to obtain permissions"),
+      );
+    });
   });
 });
