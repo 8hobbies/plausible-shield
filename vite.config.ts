@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import webExtension, { readJsonFile } from "vite-plugin-web-extension";
+import yearPlugin from "@8hobbies/vite-plugin-year";
 
 function generateManifest() {
   const manifest = readJsonFile("src/manifest.json");
@@ -37,6 +38,7 @@ export default defineConfig({
       manifest: generateManifest,
       additionalInputs: ["src/content.ts"],
     }),
+    yearPlugin(),
   ],
   test: {
     environment: "happy-dom",
