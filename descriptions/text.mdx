@@ -30,6 +30,18 @@ line at the top of the console:
 
 ## Changelog
 
+### v0.2.0
+
+- Fix a sync-related permission annoyance.
+
+  Before this release, we used `optional_host_permissions`, which does not allow browsers to sync
+  permissions granted to individual browser instances. This in some sense defeats the purposes of
+  this extension because this extension won't be activated on the required URLs. Using
+  `host_permissions` should be OK because security/privacy-aware users can change what sites are
+  allowed in extension details page.
+
+- Stop minifying the package for better transparency of what is being executed in browser.
+
 ### v0.1.0
 
 Initial release.
