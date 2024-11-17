@@ -35,11 +35,11 @@
   "devDependencies": {
     "@8hobbies/eslint-conf-baseline": "^6.0.0",
     "@8hobbies/eslint-conf-react-baseline": "^3.0.0",
-    "@8hobbies/vite-plugin-year": "^1.0.1",
+    "@8hobbies/vite-plugin-year": "^1.0.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
-    "@types/chrome": "^0.0.280",
+    "@types/chrome": "^0.0.281",
     "@types/jest": "^29.5.14",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
