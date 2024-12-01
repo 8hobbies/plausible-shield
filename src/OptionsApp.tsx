@@ -81,7 +81,6 @@ export default function App(): React.JSX.Element {
     // While we don't need to request permissions since we have "host_permissions": ["<all_urls>"]
     // in the manifest, we keep the code here for now if there is a demand for an optional
     // permission version. See the changelog of v0.2.0 for details.
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     chrome.permissions
       .request({
         origins: getUrlMatches(prefixes),

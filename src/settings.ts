@@ -24,13 +24,11 @@ export const urlPrefixesKey = "urlPrefixes" as const;
 export async function saveUrlPrefixes(
   urlPrefixes: readonly string[],
 ): Promise<void> {
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
   await chrome.storage.sync.set({ [urlPrefixesKey]: urlPrefixes });
 }
 
 /** Load URLs from storage. */
 export async function loadUrlPrefixes(): Promise<string[] | null> {
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
   const urlPrefixes = await chrome.storage.sync.get(urlPrefixesKey);
   if (!(urlPrefixesKey in urlPrefixes)) {
     // No settings yet.
