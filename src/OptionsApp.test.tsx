@@ -119,7 +119,6 @@ describe("Options page", () => {
       .spyOn(console, "error")
       .mockImplementation(() => undefined);
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     await chrome.storage.sync.set({ [urlPrefixesKey]: "not a string array" });
 
     const { unmount } = render(<App />);
@@ -228,7 +227,7 @@ describe("Options page", () => {
     ] as const) {
       test(testCase.name, async () => {
         const permissionRequestFunc = vi
-          .spyOn(chrome.permissions, "request") // eslint-disable-line @typescript-eslint/no-deprecated
+          .spyOn(chrome.permissions, "request")
           .mockImplementation(async () => true); // eslint-disable-line @typescript-eslint/require-await
 
         const user = userEvent.setup();

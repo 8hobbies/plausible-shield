@@ -33,15 +33,14 @@ export async function registerContentScripts(
 ): Promise<void> {
   const matches = getUrlMatches(newUrlPrefixes);
 
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
   const curScript = await chrome.scripting.getRegisteredContentScripts({
     ids: [contentScriptId],
   });
 
   const updateFunc =
     curScript.length === 0
-      ? chrome.scripting.registerContentScripts // eslint-disable-line @typescript-eslint/no-deprecated
-      : chrome.scripting.updateContentScripts; // eslint-disable-line @typescript-eslint/no-deprecated
+      ? chrome.scripting.registerContentScripts
+      : chrome.scripting.updateContentScripts;
 
   updateFunc([
     {
