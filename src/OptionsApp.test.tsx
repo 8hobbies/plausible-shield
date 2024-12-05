@@ -57,6 +57,19 @@ describe("Options page", () => {
     });
   });
 
+  test("URL prefixes text area has disabled spell check", async () => {
+    render(<App />);
+
+    await waitFor(() => {
+      expect(getUrlPrefixesTextAreaElement()).toBeEnabled();
+    });
+
+    expect(getUrlPrefixesTextAreaElement()).toHaveAttribute("spellcheck");
+    expect(getUrlPrefixesTextAreaElement().getAttribute("spellcheck")).toBe(
+      "false",
+    );
+  });
+
   describe("URL Prefixes text area loads previous save", () => {
     for (const testCase of [
       {

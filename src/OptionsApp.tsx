@@ -158,6 +158,11 @@ export default function App(): React.JSX.Element {
             }}
             fullWidth
             multiline
+            slotProps={{
+              htmlInput: {
+                spellCheck: "false",
+              },
+            }}
             error={urlPrefixesHelperText !== null}
             helperText={urlPrefixesHelperText}
             sx={{
