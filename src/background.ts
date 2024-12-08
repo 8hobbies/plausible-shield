@@ -48,6 +48,13 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     await chrome.tabs.create({
       url: "https://www.goodaddon.com/plausible-shield/",
     });
+
+    // This install may be a synced install. In a synced install, the storage seems to be synced
+    // together with the extension itself, and the storage change event does not take place.
+    const urlPrefixes = await loadUrlPrefixes();
+    if (urlPrefixes !== null) {
+      await registerContentScripts(urlPrefixes);
+    }
   } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
     await chrome.tabs.create({
       url: "https://www.goodaddon.com/plausible-shield/#changelog",
