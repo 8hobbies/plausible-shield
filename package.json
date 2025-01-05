@@ -26,7 +26,7 @@
     "@8hobbies/utils": "^4.2.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@fontsource/roboto": "^5.1.0",
+    "@fontsource/roboto": "^5.1.1",
     "@mui/material": "^6.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -51,9 +51,9 @@
     "prettier": "^3.4.2",
     "sass-embedded": "^1.83.0",
     "typescript": "~5.7.2",
-    "typescript-eslint": "^8.18.2",
+    "typescript-eslint": "^8.19.0",
     "vite": "^6.0.6",
-    "vite-plugin-web-extension": "^4.3.1",
+    "vite-plugin-web-extension": "^4.4.1",
     "vitest": "^2.1.8",
     "web-ext": "^8.3.0"
   }
