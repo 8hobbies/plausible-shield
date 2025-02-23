@@ -41,7 +41,7 @@
     "@testing-library/user-event": "14.6.1",
     "@types/chrome": "0.0.304",
     "@types/jest": "29.5.14",
-    "@types/react": "19.0.8",
+    "@types/react": "19.0.9",
     "@types/react-dom": "19.0.3",
     "@types/validator": "13.12.2",
     "@types/webextension-polyfill": "0.12.1",
