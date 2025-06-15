@@ -25,6 +25,6 @@ on:
 
 jobs:
   test:
-    uses: 8hobbies/workflows/.github/workflows/npm-runtime.yml@a59ef2fc12c42dbd69f1afd8502e163a9f5aabe2
+    uses: 8hobbies/workflows/.github/workflows/npm-runtime.yml@2e83292d3d74551e5ea48dcd61ee7b905755c0b6
     with:
       node-versions: '["22.x"]'
