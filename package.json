@@ -52,7 +52,7 @@
     "sass-embedded": "1.89.2",
     "typescript": "5.8.3",
     "typescript-eslint": "8.34.1",
-    "vite": "6.3.5",
+    "vite": "7.0.0",
     "vite-plugin-web-extension": "4.4.4",
     "vitest": "3.2.4",
     "web-ext": "8.8.0"
