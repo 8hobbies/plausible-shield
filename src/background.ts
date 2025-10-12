@@ -1,6 +1,6 @@
 /** @license GPL-3.0-or-later
  *
- * Copyright (C) 2024 8 Hobbies, LLC
+ * Copyright (C) 2024-2025 8 Hobbies, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ chrome.runtime.onStartup.addListener(async () => {
 });
 
 chrome.runtime.onInstalled.addListener(async (details) => {
-  if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+  if (details.reason === "install") {
     await chrome.tabs.create({
       url: "https://www.goodaddon.com/plausible-shield/",
     });
@@ -55,7 +55,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     if (urlPrefixes !== null) {
       await registerContentScripts(urlPrefixes);
     }
-  } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
+  } else if (details.reason === "update") {
     await chrome.tabs.create({
       url: "https://www.goodaddon.com/plausible-shield/#changelog",
     });
