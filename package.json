@@ -30,7 +30,7 @@
     "@mui/material": "7.3.4",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "validator": "13.15.15"
+    "validator": "13.15.20"
   },
   "devDependencies": {
     "@8hobbies/eslint-conf-baseline": "6.0.0",
