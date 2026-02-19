@@ -38,7 +38,7 @@ import { isURL } from "validator";
 
 export default function App(): React.JSX.Element {
   async function handleSubmit(
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.SyntheticEvent<HTMLFormElement>,
   ): Promise<boolean | undefined> {
     e.preventDefault();
 
