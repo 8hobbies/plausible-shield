@@ -44,5 +44,10 @@ export default defineConfig({
     environment: "happy-dom",
     globals: true,
     setupFiles: ["./vitest-setup.js"],
+    server: {
+      deps: {
+        inline: ["@mui/material"],
+      },
+    },
   },
 });
