@@ -50,7 +50,7 @@
     "happy-dom": "20.10.6",
     "prettier": "3.8.4",
     "sass-embedded": "1.100.0",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "typescript-eslint": "8.61.1",
     "vite": "8.0.16",
     "vite-plugin-web-extension": "4.5.1",
