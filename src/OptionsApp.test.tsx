@@ -21,10 +21,10 @@ import {
   defaultUrlPrefixes,
   saveChangesButtonLabel,
   urlPrefixesTextAreaLabel,
-} from "./ui_constants.js";
+} from "./ui_constants";
 import { render, screen, waitFor } from "@testing-library/react";
-import App from "./OptionsApp.js";
-import { urlPrefixesKey } from "./settings.js";
+import App from "./OptionsApp";
+import { urlPrefixesKey } from "./settings";
 import { userEvent } from "@testing-library/user-event";
 
 function getUrlPrefixesTextAreaElement(): HTMLTextAreaElement {

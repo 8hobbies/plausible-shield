@@ -31,9 +31,9 @@ import {
   defaultUrlPrefixes,
   saveChangesButtonLabel,
   urlPrefixesTextAreaLabel,
-} from "./ui_constants.js";
-import { loadUrlPrefixes, saveUrlPrefixes } from "./settings.js";
-import { getUrlMatches } from "./register_content_script.js";
+} from "./ui_constants";
+import { loadUrlPrefixes, saveUrlPrefixes } from "./settings";
+import { getUrlMatches } from "./register_content_script";
 import { isURL } from "validator";
 
 export default function App(): React.JSX.Element {

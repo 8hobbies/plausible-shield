@@ -17,7 +17,7 @@
  */
 
 import "./options.scss";
-import App from "./OptionsApp.js";
+import App from "./OptionsApp";
 import React from "react";
 import ReactDOM from "react-dom/client";
 

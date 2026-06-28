@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { loadUrlPrefixes, urlPrefixesKey } from "./settings.js";
+import { loadUrlPrefixes, urlPrefixesKey } from "./settings";
 import { isArrayOf } from "@8hobbies/utils";
-import { registerContentScripts } from "./register_content_script.js";
+import { registerContentScripts } from "./register_content_script";
 
 chrome.storage.onChanged.addListener(async (changes, _) => {
   if (!(urlPrefixesKey in changes)) {
